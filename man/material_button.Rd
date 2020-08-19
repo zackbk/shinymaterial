@@ -29,3 +29,6 @@ material_button(
   color = "blue lighten-2"
 )
 }
+\seealso{
+\code{\link{update_material_button}}
+}

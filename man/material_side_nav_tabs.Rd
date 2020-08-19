@@ -4,8 +4,12 @@
 \alias{material_side_nav_tabs}
 \title{Place UI content within a side-nav tab}
 \usage{
-material_side_nav_tabs(side_nav_tabs, icons = NULL, color = NULL,
-  font_color = NULL)
+material_side_nav_tabs(
+  side_nav_tabs,
+  icons = NULL,
+  color = NULL,
+  font_color = NULL
+)
 }
 \arguments{
 \item{side_nav_tabs}{Named vector. The side-nav tab display names and corresponding side-nav tab ids.}
@@ -28,4 +32,7 @@ material_side_nav_tabs(
   icons = c("cloud", "none"),
   color = "teal"
 )
+}
+\seealso{
+\code{\link{material_side_nav_tab_content}}
 }

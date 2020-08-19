@@ -3,45 +3,81 @@ if(interactive()){
   library(shinymaterial)
   
   ui <-
-    material_page(
-      title = "Testing",
-      nav_bar_color = 'red lighten-3',
+    material_page(materialize_in_www = FALSE,
+                  primary_theme_color = "yellow",
+                  secondary_theme_color = "black",
+      title = "Testing", nav_bar_fixed = TRUE,
+     # nav_bar_color = 'red lighten-3',
       background_color = "white",
+      include_icons = TRUE, include_fonts = TRUE,
       material_side_nav(
         tags$h4("stuff"),
         background_color = "blue lighten-4"
       ),
       tags$div(
         class = "container",
-        
+        material_button(
+          input_id = "selectTabTest",
+          "Select Second Green Tab"
+        ),
         material_modal(
           modal_id = "example_modal",
           button_text = "Modal",
           title = "Example Modal Title",
           button_color = "red lighten-4",
           button_depth = 5,
-          shiny::tags$p("Modal Content")
+          shiny::tags$p("Modal Content"),
+          close_button_label = "Close2"
         ),
-        
+        material_modal(
+          modal_id = "example_modal2",
+          button_text = "Modal2",
+          title = "Example Modal Title",
+          button_color = "red lighten-4",
+          button_depth = 5,
+          shiny::tags$p("Modal Content"),
+          close_button_label = "Close2", 
+          display_button = FALSE,
+          material_button(
+            input_id = "close_modal2", 
+            label = "TEST CLOSE MODAL"
+          )
+        ),
+        material_button(input_id = "open_modal2", label = "testmodal"),
         material_tabs(
           tabs = c(
             "Example Tab 1" = "example_tab_1",
             "Example Tab 2" = "example_tab_2"
-          ),
-          color = "purple"
+          )
         ),
         material_tabs(
           tabs = c(
             "Example Tab 11" = "example_tab_11",
             "Example Tab 22" = "example_tab_22"
           ),
-          color = "deep-purple"
+          color = "green"
+        ),
+        material_tab_content(tab_id = "example_tab_11",
+                             "tab 1 stuff"),
+        material_tab_content(tab_id = "example_tab_22",
+                             plotOutput("tab2Plot"),
+                             "tab 2 stuff"),
+        material_card(
+          title = "Example Card div",
+          shiny::tags$h1("Card Content"),
+          depth = 5, divider = TRUE
         ),
         material_card(
-          title = "Example Card",
+          title = "Example Card no div",
           shiny::tags$h1("Card Content"),
           depth = 5
-        ),
+        
+      ),
+      material_card(
+        title = "Example Card blue div",
+        shiny::tags$h1("Card Content"),
+        depth = 5, color = "blue", divider = TRUE
+      ),
         # Button ------------------------------------------------------------------
         material_input(
           type = "button",
@@ -52,7 +88,7 @@ if(interactive()){
           input_id = "button1",
           label = "Button"
         ),
-        
+      shinymaterial::material_floating_button(input_id = "float", icon="cloud", pulse = TRUE),
         material_input(
           type = "button",
           input_id = "input_button2",
@@ -80,8 +116,8 @@ if(interactive()){
         ),
         material_input(
           type = "checkbox",
-          input_id = "input_checkbox2",
-          label = "Icheckbox",
+          input_id = "input_checkboxBLUE2",
+          label = "Icheckbox BLUE",
           initial_value = TRUE,
           color = "blue"
         ),
@@ -89,26 +125,23 @@ if(interactive()){
           input_id = "checkbox2",
           label = "checkbox",
           initial_value = TRUE,
-          color = "#ef5350"
+          color = "red"
         ),
         # Switch ------------------------------------------------------------------
         material_input(
           type = "switch",
           input_id = "input_switch1",
-          label = "Iswitch",
           off_label = "Off",
           on_label = "On"
         ),
         material_switch(
           input_id = "switch1",
-          label = "switch",
           off_label = "Off",
           on_label = "On"
         ),
         material_input(
           type = "switch",
           input_id = "input_switch2",
-          label = "Iswitch",
           off_label = "Off",
           on_label = "On",
           initial_value = TRUE,
@@ -116,7 +149,6 @@ if(interactive()){
         ),
         material_switch(
           input_id = "switch2",
-          label = "switch",
           off_label = "Off",
           on_label = "On",
           initial_value = TRUE,
@@ -187,7 +219,7 @@ if(interactive()){
         ),
         material_text_box(
           input_id = "text_box1",
-          label = "text_box1"
+          label = "text_box1", icon = "cloud"
         ),
         
         material_input(
@@ -242,7 +274,7 @@ if(interactive()){
         ),
         material_radio_button(
           input_id = "example_radio_button1",
-          label = "Radio Button",
+          label = "Radio Button VALUE",
           choices = c(
             "Cake" = "c1",
             "Pie" = "p1",
@@ -268,7 +300,8 @@ if(interactive()){
             "Pie" = "p3",
             "Brownie" = "b3"
           ),
-          color = "#bbdefb"
+          color = "blue",
+          with_gap = TRUE
         ),
         # slider ------------------------------------------------------------------
         material_input(
@@ -282,10 +315,11 @@ if(interactive()){
         ),
         material_slider(
           input_id = "example_slider1",
-          label = "slider",
+          label = "slider  step 3",
           min_value = 5,
           max_value = 15,
           initial_value = 10,
+          step_size = 3,
           color = "#bbdefb"
         ),
         # dropdown
@@ -307,11 +341,23 @@ if(interactive()){
           label = "Drop down",
           choices = c(
             "Chicken" = "c2",
-            "Steak" = "s2",
+            "Ste ak" = "s 2",
             "Fish" = "f2"
           ),
-          selected = c("c"),
+          selected = c("c2"),
           multiple = FALSE,
+          color = "#ef5350"
+        ),
+        material_dropdown(
+          input_id = "input_example_dropdown_mult",
+          label = "Drop down",
+          choices = c(
+            "Chick en" = "c 2",
+            "Ste ak" = "s 2",
+            "Fi sh" = "f 2"
+          ),
+          selected = c("c 2"),
+          multiple = TRUE,
           color = "#ef5350"
         ),
         # date picker -------------------------------------------------------------
@@ -330,6 +376,13 @@ if(interactive()){
           input_id = "example_file_input2",
           label = "File"
         ),
+      
+        material_switch(input_id = "update_button_test_switch", 
+                        off_label = "No", on_label = "Yes", 
+                        initial_value = TRUE),
+        material_button(input_id = "update_button_test",
+                        label = "test", icon = "cloud"),
+        br(),
         material_button(input_id = "update_text_test_button",
                         label = "update text"),
         material_text_box(input_id = "update_text_test",
@@ -347,9 +400,10 @@ if(interactive()){
         material_button(input_id = "update_number_box_test_button",
                         label = "update number box"),
         material_number_box(input_id = "update_number_box_test",
-                            label = "test",
+                            label = "test step 3",
                             min_value = 1,
                             max_value = 50,
+                            step_size = 3,
                             initial_value = 2),
         plotOutput('testNumberboxPlot'),
         
@@ -363,13 +417,13 @@ if(interactive()){
         material_button(input_id = "update_switch_test_button",
                         label = "update switch"),
         material_switch(input_id = "update_switch_test",
-                        label = "text", initial_value = FALSE),
+                        initial_value = FALSE),
         plotOutput('testSwitchPlot'),
         
         material_button(input_id = "update_radio_button_test_button",
                         label = "update radio button"),
         material_radio_button(input_id = "update_radio_button_test",
-                              label = "text",choices = c("Adf" =  "a", "Bdf" = "b")),
+                              label = "text",choices = c("Adf" =  "a_update", "Bdf" = "b_update"), with_gap = TRUE),
         plotOutput('testRadioButtonPlot'),
         
         material_button(input_id = "update_slider_test_button",
@@ -401,6 +455,25 @@ if(interactive()){
   
   
   server <- function(input, output, session) {
+    
+    # observeEvent(input$selectTabTest, {
+    #   select_material_tab(session, "example_tab_22")
+    # })
+    output$tab2Plot <- renderPlot({
+      plot(1:10)
+    })
+    observeEvent(input$open_modal2, {
+      message('this happened')
+      if(input$open_modal2 > 0){
+      open_material_modal(session, "example_modal2")
+      }
+    })
+    observeEvent(input$close_modal2, {
+      message('this happened')
+      if(input$close_modal2 > 0){
+        close_material_modal(session, "example_modal2")
+      }
+    })
     #button
     observeEvent(input$input_button1, {
       message(input$input_button1)
@@ -421,8 +494,8 @@ if(interactive()){
     observeEvent(input$checkbox1, {
       message(input$checkbox1)
     })
-    observeEvent(input$input_checkbox2, {
-      message(input$input_checkbox2)
+    observeEvent(input$input_checkboxBLUE2, {
+      message(input$input_checkboxBLUE2)
     })
     observeEvent(input$checkbox2, {
       message(input$checkbox2)
@@ -514,13 +587,22 @@ if(interactive()){
     observeEvent(input$input_example_dropdown1, {
       message(input$input_example_dropdown1)
     })
+    
+    observeEvent(input$input_example_dropdown_mult, {
+      message(input$input_example_dropdown_mult)
+    })
     observeEvent(input$example_dropdown1, {
       message(input$example_dropdown1)
     })
     observeEvent(input$example_date_picker, {
       message(input$example_date_picker)
     })
-    
+    observe({
+      if (input$update_button_test_switch)
+        update_material_button(session, "update_button_test", "Active", "cloud", FALSE)
+      else
+        update_material_button(session, "update_button_test", "Non Active", "close", TRUE)
+    })
     observeEvent(input$update_text_test_button, {
       
       update_material_text_box(session,
@@ -594,7 +676,7 @@ if(interactive()){
       
       update_material_radio_button(session,
                                    input_id = "update_radio_button_test",
-                                   value = "b")
+                                   value = "b_update")
       
     })
     
@@ -612,6 +694,8 @@ if(interactive()){
     })
     
     output$testSliderPlot <- renderPlot({
+      req(input$update_slider_test)
+      # browser()
       plot(1:input$update_slider_test)
     })
     
@@ -636,7 +720,7 @@ if(interactive()){
 
       update_material_date_picker(session,
                                input_id = "update_date_picker_test",
-                               value = "10 April, 2012")
+                               value = "2010-06-11")
 
     })
     
@@ -656,7 +740,8 @@ if(interactive()){
       #  req(input$example_file_input)
       #  x <- input$example_file_input
       # save(x, file = "infile.Rdata")
-      # message(inFile)
+      message(paste0("length inFile ", length(inFile)))
+      message(paste0("names inFile ", names(inFile)))
       #  message(input$example_file_input)
       x <- read.csv(inFile$datapath)
       message(head(x))

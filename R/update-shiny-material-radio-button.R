@@ -4,6 +4,7 @@
 #' @param session The session object passed to function given to shinyServer.
 #' @param input_id The input_id of the material_radio_button.
 #' @param value The value to set for the material_radio_button.
+#' @seealso \code{\link{material_radio_button}}
 #' @examples
 #' \dontrun{
 #' update_material_radio_button(
@@ -16,6 +17,11 @@ update_material_radio_button <- function(session, input_id, value = NULL){
   if(is.null(value)) {
     return(NULL)
   }
+  
+  # if(!(value %in% choices)) {
+  #   message("ERROR: value '", value, "' not found in choices")
+  #   return(NULL)
+  # }
   
   js_code <- paste0(
     "$(", paste0("'#", input_id, "'"), ").find( DOUBLEQUOTEinput[id='", value, "']:radioDOUBLEQUOTE ).prop('checked', true); Shiny.onInputChange('", input_id, "', '", value, "');"

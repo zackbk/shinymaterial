@@ -5,6 +5,7 @@
 #' @param icons String vector. The names of the icons. Leave blank for no icons, or use "none". The length of the vector must match the length of side_nav_tabs. Visit \url{http://materializecss.com/icons.html} for a list of available icons.
 #' @param color String. The accent color of the side-nav tab wave animation. Leave blank for the default color. Visit \url{http://materializecss.com/waves.html} for a list of available colors. \emph{Side-nav tab color requires using word forms of colors (e.g. "purple").}
 #' @param font_color String. The side-nav tabs font color. Leave blank for the default color. Visit \url{http://materializecss.com/color.html} for a list of available colors. \emph{Side-nav tab color requires using word forms of colors (e.g. "deep-purple"). Also, lighten or darken effects do not work on side-nav tab colors.}
+#' @seealso \code{\link{material_side_nav_tab_content}}
 #' @examples
 #' material_side_nav_tabs(
 #'   side_nav_tabs = c(
@@ -66,17 +67,24 @@ material_side_nav_tabs <- function(side_nav_tabs, icons = NULL, color = NULL, fo
               )
             ),
           href = "javascript:void(0)",
-          onclick = paste0("$('.shiny-material-side-nav-tab-content').hide();",
-                           "$('.shiny-material-side-nav-tab').removeClass('active');",
-                           "$('#", side_nav_tabs[[i]], "').css('visibility', 'visible');",
-                           "$('#", side_nav_tabs[[i]], "').show();",
-                           "$('#", paste0(side_nav_tabs[[i]], "_tab_id"), "').addClass('active');"),
+          onclick = paste0(
+            "$('.shiny-material-side-nav-tab-content').hide();",
+            "$('.shiny-material-side-nav-tab-content').trigger('hide');",
+            "$('.shiny-material-side-nav-tab-content').trigger('hidden');",
+            "$('.shiny-material-side-nav-tab').removeClass('active');",
+            "$('#", side_nav_tabs[[i]], "').show();",
+            "$('#", side_nav_tabs[[i]], "').trigger('show');",
+            "$('#", side_nav_tabs[[i]], "').trigger('shown');",
+            "$('#", paste0(side_nav_tabs[[i]], "_tab_id"), "').addClass('active');",
+            "$('#side_nav_tabs_click_info').trigger('click');"
+          ),
           icon_tag.i, names(side_nav_tabs)[[i]]
         )
       )
   }
   
   shiny::tagList(
+    shiny::tags$div(id = "side_nav_tabs_click_info"),
     material_side_nav_tabs
   )
 }

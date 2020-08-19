@@ -3,6 +3,7 @@
 #' Use this function to place UI content within a specific side-nav tab.
 #' @param side_nav_tab_id String. The side-nav tab id in which to place the UI content.
 #' @param ... The UI elements to place in the side-nav tab.
+#' @seealso \code{\link{material_side_nav_tabs}}
 #' @examples
 #' material_side_nav_tab_content(
 #'   side_nav_tab_id = "example_side_nav_tab_1",
@@ -14,7 +15,7 @@ material_side_nav_tab_content <- function(side_nav_tab_id, ...){
     shiny::tags$div(
       class = "col s12 shiny-material-side-nav-tab-content",
       id = side_nav_tab_id,
-      style = "visibility:hidden",
+      style = "display:none",
       ...
     ),
     shiny::singleton(

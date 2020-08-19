@@ -7,6 +7,7 @@
 #' @param selected String. The initially selected underyling value.
 #' @param multiple Boolean. Can multiple items be selected?
 #' @param color String. The color of the dropdown choices. Leave empty for the default color. Visit \url{http://materializecss.com/color.html} for a list of available colors. \emph{This input requires using color hex codes, rather than the word form. E.g., "#ef5350", rather than "red lighten-1".}
+#' @seealso \code{\link{update_material_dropdown}}
 #' @examples
 #' material_dropdown(
 #'   input_id = "example_dropdown",
@@ -22,6 +23,10 @@
 #' )
 material_dropdown <- function(input_id, label, choices = NULL, selected = NULL, multiple = NULL, color = NULL){
   
+  if(is.null(choices)){
+    choices <- ""
+  }
+  
   if(!is.null(color)){
     
     dropdown_style <-
@@ -32,7 +37,10 @@ material_dropdown <- function(input_id, label, choices = NULL, selected = NULL, 
               '
               #shiny-material-dropdown-', input_id, ' ul.dropdown-content.select-dropdown li span {
               color: ', color, ';
-               }
+              }
+               #shiny-material-dropdown-', input_id, ' .select-wrapper input.select-dropdown:focus {
+                border-bottom: 1px solid ', color, ';
+              }
               '
             )
           )
