@@ -28,8 +28,8 @@ update_material_dropdown <- function(session, input_id, value = NULL, choices = 
     }
     
     
-    if(!(value %in% choices)) {
-      message("ERROR: value '", value, "' not found in choices")
+    if(!all(value %in% choices)) {
+      message("ERROR: value '", paste(value,collapse =", "), "' not found in choices")
       return(NULL)
     }
     
@@ -70,17 +70,18 @@ update_material_dropdown <- function(session, input_id, value = NULL, choices = 
     )
     
   }
-  
-  valueShow <- gsub(pattern = " ", replacement = "_shinymaterialdropdownspace_", x = value, fixed = TRUE)
-  
-  value_js_code <- paste0(
-    "$(", paste0("'#", input_id, "'"), ").find('option[value=", paste0("DOUBLEQUOTE", valueShow, "DOUBLEQUOTE"), "]').prop('selected', true);$(", paste0("'#", input_id, "'"), ").formSelect();Shiny.onInputChange('", input_id, "', '", value, "');"
-  )
-  
-  value_js_code <- gsub(pattern = "DOUBLEQUOTE", replacement = '"', x = value_js_code)
-  
-  session$sendCustomMessage(
-    type = "shinymaterialJS",
-    value_js_code
-  )
+  sapply(value[value %in% choices],function(value) {
+    valueShow <- gsub(pattern = " ", replacement = "_shinymaterialdropdownspace_", x = value, fixed = TRUE)
+    
+    value_js_code <- paste0(
+      "$(", paste0("'#", input_id, "'"), ").find('option[value=", paste0("DOUBLEQUOTE", valueShow, "DOUBLEQUOTE"), "]').prop('selected', true);$(", paste0("'#", input_id, "'"), ").formSelect();Shiny.onInputChange('", input_id, "', '", value, "');"
+    )
+    
+    value_js_code <- gsub(pattern = "DOUBLEQUOTE", replacement = '"', x = value_js_code)
+    
+    session$sendCustomMessage(
+      type = "shinymaterialJS",
+      value_js_code
+    )
+  })
 }
